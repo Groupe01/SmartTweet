@@ -18,7 +18,7 @@ def tweet_search(hashtag):
   response = requests.request("GET", url, headers=headers, data = payload).json()
   df = pd.json_normalize(response['data']).set_index('id')
 
-  while 'next_token' in response['meta'].keys() :
+  while 'next_token' in response['meta'].keys() and len(df)<5000 :
     next_token = response['meta']['next_token']
     url = f"https://api.twitter.com/2/tweets/search/recent?max_results=100&next_token={next_token}&query={hashtag}"
     response = requests.request("GET", url, headers=headers, data = payload).json()
@@ -29,7 +29,7 @@ def tweet_search(hashtag):
   print (df.shape)
   return df
 
-# tweet_search('GalaxyZFold2')
+tweet_search('ps5')
 
 
 
