@@ -9,7 +9,7 @@ def tweet_search(hashtag):
   bearertoken = 'AAAAAAAAAAAAAAAAAAAAAOuOHQEAAAAAdCYvOyCRPFuDaYlZisar99fsn54%3D1fYrjnxRipezCSHCme16XF2AySm2tdTliwEH0hcRb016C01KvN'
   hashtag = '%23'+hashtag+' -RT'
 
-  url = f"https://api.twitter.com/2/tweets/search/recent?max_results=100&query={hashtag}&tweet.fields=created_at"
+  url = f"https://api.twitter.com/2/tweets/search/recent?max_results=100&query={hashtag}&tweet.fields=created_at,lang"
 
   payload = {}
   headers = {'Authorization': f'Bearer {bearertoken}',}
@@ -24,11 +24,12 @@ def tweet_search(hashtag):
     nextdf = pd.json_normalize(response['data']).set_index('id')
     df = pd.concat([df,nextdf])
 
-  print (df.head())
-  print (df.shape)
   return df
 
-#tweet_search('ps5')
+# df = tweet_search('ps5')
+# print (df.head)
+# print (df.shape)
+
 
 
 
