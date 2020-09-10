@@ -21,7 +21,8 @@ def get_hashtag_tweets (csv_file, hash_tag):
     csvwriter = csv.writer(csvfile)
 
     for tweet in tweepy.Cursor(api.search,q= hash_tag).items():
-        csvwriter.writerow([tweet.id_str,tweet.created_at, tweet.text.encode('utf-8').decode("ascii","ignore")])
+        if 'RT @' not in  tweet.text:
+            csvwriter.writerow([tweet.id_str,tweet.created_at, tweet.text.encode('utf-8').decode("ascii","ignore")])
 
 get_hashtag_tweets('tweets.csv',"#GalaxyZFold2")
 
