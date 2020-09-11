@@ -6,7 +6,7 @@ def connexion() :
     '''
     Connexion to elefantsql database
     '''
-    print ('Data connexion...')
+    print ('Database connexion...')
 
     os.environ['DATABASE_URL'] = "postgres://zrhugxuo:lbklxIE7ZbXRFZhQOFCl0n_FbxlOI_WW@kandula.db.elephantsql.com:5432/zrhugxuo"
     up.uses_netloc.append("postgres")
@@ -20,9 +20,11 @@ def connexion() :
     )
 
     cur = conn.cursor()
+    print ('OK - Connected to database.')
+
     return cur
 
-    print ('OK - Connected to database.')
+
 
 
 def insert(dataframe) :
