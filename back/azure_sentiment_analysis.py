@@ -26,6 +26,9 @@ def authenticate_client():
 def sentiment_analysis(client, df):
     """This function analyses the sentiments of the tweets present in the DataFrame
     """
+    df['result'] = "waiting"
+    df['confidence'] = 0
+
     for i in range(len(df)):
         df['result'] = "waiting"
         df['confidence'] = 0
