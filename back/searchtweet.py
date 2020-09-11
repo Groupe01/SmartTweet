@@ -21,7 +21,7 @@ def tweet_search(produit):
   print (f'OK - Connected.\nSearching tweets with hashtag "#{produit}"...')
   while 'next_token' in response['meta'].keys() and len(df)<2000 :
     next_token = response['meta']['next_token']
-    url = f"https://api.twitter.com/2/tweets/search/recent?max_results=100&next_token={next_token}&query={hashtag}"
+    url = f"https://api.twitter.com/2/tweets/search/recent?max_results=100&next_token={next_token}&query={hashtag}&tweet.fields=created_at,lang"
     response = requests.request("GET", url, headers=headers, data = payload).json()
     nextdf = pd.json_normalize(response['data']).set_index('id')
     df = pd.concat([df,nextdf])
