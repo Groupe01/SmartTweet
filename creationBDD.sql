@@ -17,3 +17,9 @@ CREATE TABLE IF NOT EXISTS "tweet" (
 "fk_hashtag_id" INTEGER REFERENCES hashtag(id_hashtag),
 "fk_feelind_id" INTEGER REFERENCES feeling(id_feeling)
 );
+
+INSERT INTO feeling(feeling) VALUES
+    ('positive'),
+    ('neutral'),
+    ('negative'),
+    ('mixed');
