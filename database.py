@@ -25,10 +25,31 @@ def connexion() :
 
 
 
-def insert(dataframe) :
+def insert(dataframe, hashtag) :
     '''
     Insert datas in database from dataframe created after Azure treatment
     '''
-    
-    cur.execute(f'INSERT INTO hashtag(hashtag) VALUES ({hashtag});''', hashtag)
+    conn, cur = connexion()
 
+    print ('\nFormating datas...')
+    df_import = dataframe
+    df_import.replace(['positive', 'neutral', 'negative', 'mixed'],[1, 2, 3, 4],inplace=True)
+    df_import['id_tweet'] = df_import.index
+    print ('OK.\n')
+
+    print ('Insert hashtag in database...')
+    cur.execute(f"INSERT INTO hashtag(hashtag) VALUES('{hashtag}') ON CONFLICT DO NOTHING;")
+    print ('OK.\n')
+
+    print ('Insert tweets in database...')
+    cur.execute(f"SELECT id_hashtag FROM hashtag WHERE hashtag.hashtag = '{hashtag}'")
+    df_import['hashtag'] = cur.fetchall()[0][0]
+
+    liste_df = df_import.values.tolist()
+    cur.executemany("INSERT INTO tweet(date,lang,text,fk_feelind_id,confidence,id_tweet,fk_hashtag_id) VALUES (%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", liste_df)
+    print ('OK. \n')
+
+    conn.commit()
+    conn.close()
+
+    return len(liste_df)

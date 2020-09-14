@@ -9,11 +9,11 @@ CREATE TABLE IF NOT EXISTS "feeling" (
 );
 
 CREATE TABLE IF NOT EXISTS "tweet" (
-"id_tweet" INT PRIMARY KEY NOT NULL,
+"id_tweet" TEXT PRIMARY KEY NOT NULL,
 "text" TEXT NOT NULL,
 "date" TIMESTAMP,
 "lang" TEXT,
-"trust_lvl" REAL,
+"confidence" REAL,
 "fk_hashtag_id" INTEGER REFERENCES hashtag(id_hashtag),
 "fk_feelind_id" INTEGER REFERENCES feeling(id_feeling)
 );
