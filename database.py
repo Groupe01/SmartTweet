@@ -1,6 +1,7 @@
 import os
 import urllib.parse as up
 import psycopg2
+import pandas as pd
 
 def connexion() :
     '''
@@ -53,3 +54,38 @@ def insert(dataframe, hashtag) :
     conn.close()
 
     return len(liste_df)
+
+
+def feeling_by_day(hashtag):
+    '''
+    Call the sql function to view datas day by day
+    '''
+    conn, cur = connexion()
+    
+    cur.execute(f"SELECT * FROM feeling_by_day('{hashtag}');")
+    result = cur.fetchall()
+
+    conn.close()
+
+    df = pd.DataFrame(result,columns=['hashtag','date','feeling','nb_tweets'])
+
+    return df
+
+
+def feeling(hashtag):
+    '''
+    Call the sql function to count tweet group by feeling
+    '''
+    conn, cur = connexion()
+    
+    cur.execute(f"SELECT hashtag.hashtag, feeling.feeling, COUNT(tweet.id_tweet) FROM hashtag, feeling, tweet WHERE feeling.id_feeling = tweet.fk_feeling_id AND hashtag.id_hashtag = tweet.fk_hashtag_id AND hashtag.hashtag = '{hashtag}' GROUP BY hashtag.hashtag, feeling.feeling ORDER BY hashtag.hashtag, feeling.feeling;")
+    result = cur.fetchall()
+
+    conn.close()
+
+    df = pd.DataFrame(result,columns=['hashtag','feeling','nb_tweets'])
+
+    return df
+
+
+
