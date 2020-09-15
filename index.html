@@ -14,7 +14,7 @@
     <div id="app">
         <div class="container">
             <div class="row">
-                <p class="jumbotron"> Login : <input type="text" v-model="user" /> | you are connected as {{user}} </p>
+                <h1 class="jumbotron">Analysis Sentiments With Azure</h1>
             </div>
 
             <h1 v-bind:class="forme">Product Hashtag</h1>
@@ -67,7 +67,7 @@
                             // eslint-disable-next-line
                             console.error(error);
                         });
-                    const json = '{"Hashtag": "ps5", "Positive":  425, "Negative": 376, "Neutral": 1189, "Mixed":  109}';
+                   
                     let obj = JSON.parse(this.msg);
 
 
