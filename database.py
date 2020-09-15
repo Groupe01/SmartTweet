@@ -47,7 +47,7 @@ def insert(dataframe, hashtag) :
     df_import['hashtag'] = cur.fetchall()[0][0]
 
     liste_df = df_import.values.tolist()
-    cur.executemany("INSERT INTO tweet(date,lang,text,fk_feelind_id,confidence,id_tweet,fk_hashtag_id) VALUES (%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", liste_df)
+    cur.executemany("INSERT INTO tweet(date,lang,text,fk_feeling_id,confidence,id_tweet,fk_hashtag_id) VALUES (%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", liste_df)
     print ('OK. \n')
 
     conn.commit()
