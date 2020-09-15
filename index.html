@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My first Vue app</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+  <div id="app">
+      <div class ="container">
+          <div class="row">
+              <p class="jumbotron"> Login : <input type="text" v-model= "user"/> | you are connected as {{user}} </p>
+          </div>
+
+          <h1 class="display-4" v-if ="commandes.length > 0"> Product Analysis</h1>
+          <ul>
+              <li v-for = "ms in msg">{{ms}}</li>
+          </ul> 
+          
+
+          
+          <h1 v-bind:class = "forme">Product Hashtag</h1>
+          <div class ="row">
+           
+            <div class ="col-3"  v-for ="product in products">
+                <p class ="jumbotron">
+                    {{product}} </br>
+                    <button v-on:click="analyser()"> Analyser </button>
+                </p>
+            </div>   
+          </div>
+      </div>
+  </div>
+
+  <script>
+    
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+          user: 'Mohamed',
+          products: ["ps5","xboxseries","galaxyzfold2", "iphone11"],
+          msg:[] ,
+          commandes: [],
+          forme : "display-4"
+      },
+      methods: {
+        
+        analyser() {
+        const path = 'http://localhost:8080/analysisfeeling/'+this.products[0];
+        axios.get(path, {headers: {
+            'Access-Control-Allow-Origin': '*',
+            crossdomain: true
+            }})
+            .then((res) => {
+            this.msg = res.data;
+            console.log(res)
+            })
+            .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+            });
+        },
+        analyser_day() {
+        const path = 'http://localhost:8080/analysisfeelingday/'+this.products[0];
+        axios.get(path, {headers: {
+            'Access-Control-Allow-Origin': '*',
+            crossdomain: true
+            }})
+            .then((res) => {
+            this.msg = res.data;
+            console.log(res)
+            })
+            .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+            });
+        },
+        
+    },
+    created() {
+        this.analyser();
+  },
+    })
+  </script>
+</body>
+</html>
