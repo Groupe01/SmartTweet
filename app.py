@@ -15,12 +15,13 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 @app.route('/analysisfeeling/<hashtag>')
 def analysis(hashtag):
     
-
+    dic={}
     feeling = get_feeling (hashtag)
     # feeling = feeling.to_json()
     feeling = feeling.to_dict()
-    print(feeling)
-    return feeling
+    dic = {"Hashtag" : feeling["Hashtag"][0], "Positive" : feeling["Positive"][0], "Negative" : feeling["Negative"][0], "Neutral" : feeling["Neutral"][0], "Mixed" : feeling["Mixed"][0]}
+    print(dic.keys())
+    return dic
 
 @app.route('/analysisfeelingday/<hashtag>')
 def analysis_day(hashtag):
