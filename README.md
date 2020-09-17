@@ -6,7 +6,6 @@ Le but de ce projet est d'analyser le contenu de tweets et de les classer selon 
 ## Prérequis
 - Copiez le contenu du repository sur votre ordinateur
 - Installer Python3 ainsi que les librairies présentes dans le fichier requirements.txt
-- Installer Vue.JS
 - Une instance de ElephantSQL
 
 ## Installation
@@ -64,7 +63,7 @@ END;
 $$
 ```
 
-\\ partie lancement des analyses et mise en bdd pour les différents tweets
+- Pour charger vos différents produits dans la base de données, éxécutez le fichier main.py autant de fois qu'il y a de produits à tester. La base de données fournie est préchargée avec les produits PS5, XBOXSERIESX, Iphone11 et GalaxyZFold2.
 
 \\ lancement du serveur back et front
 
