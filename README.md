@@ -10,7 +10,59 @@ Le but de ce projet est d'analyser le contenu de tweets et de les classer selon 
 - Une instance de ElephantSQL
 
 ## Installation
-\\ partie initialisation de la base de données
+- Pour créer la base de données, rendez vous dans le browser d'Elephant SQL et entrez les commandes suivantes :
+```SQL
+CREATE TABLE IF NOT EXISTS "hashtag" (
+"id_hashtag" SERIAL PRIMARY KEY NOT NULL,
+"hashtag" TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "feeling" (
+"id_feeling" SERIAL PRIMARY KEY NOT NULL,
+"feeling" TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "tweet" (
+"id_tweet" TEXT PRIMARY KEY NOT NULL,
+"text" TEXT NOT NULL,
+"date" TIMESTAMP,
+"lang" TEXT,
+"confidence" REAL,
+"fk_hashtag_id" INTEGER REFERENCES hashtag(id_hashtag),
+"fk_feeling_id" INTEGER REFERENCES feeling(id_feeling)
+);
+
+INSERT INTO feeling(feeling) VALUES
+    ('positive'),
+    ('neutral'),
+    ('negative'),
+    ('mixed');
+```
+- Ensuite, pour créer les fonctions, éxécutez les commandes suivantes :
+```SQL
+CREATE OR REPLACE FUNCTION feeling_by_day(myhashtag TEXT)
+RETURNS TABLE (
+    hashtag TEXT,
+    day DATE,
+    feeling TEXT,
+    nb_tweets BIGINT
+)
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+RETURN QUERY
+    SELECT hashtag.hashtag, date(tweet.date) as day, feeling.feeling, COUNT(tweet.id_tweet)
+    FROM hashtag, tweet, feeling
+    WHERE tweet.fk_feeling_id = feeling.id_feeling
+    AND tweet.fk_hashtag_id = hashtag.id_hashtag
+    AND hashtag.hashtag = myhashtag
+    GROUP BY hashtag.hashtag, day, feeling.feeling
+    ORDER BY hashtag.hashtag, day, feeling.feeling
+;
+END;
+$$
+```
 
 \\ partie lancement des analyses et mise en bdd pour les différents tweets
 
