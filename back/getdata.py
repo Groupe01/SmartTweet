@@ -1,4 +1,4 @@
-from db_con import connexion
+from back.db_con import connexion
 import pandas as pd
 
 

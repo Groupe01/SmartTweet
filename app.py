@@ -1,7 +1,7 @@
 from flask import Flask, render_template,url_for
 from flask import request, jsonify
-from getdata import get_feeling, feeling_by_day
-from db_con import connexion
+from back.getdata import get_feeling, feeling_by_day
+from back.db_con import connexion
 from flask_cors import CORS
 import json
 
