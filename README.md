@@ -13,32 +13,6 @@ Le but de ce projet est d'analyser le contenu de tweets et de les classer selon 
 
 - Pour créer la base de données, rendez vous dans le browser d'Elephant SQL et entrez les commandes présentes  dans le fichier [creationBDD.sql](https://github.com/Groupe01/SmartTweet/blob/master/database_install/creationBDD.sql)
 
-- Ensuite, pour créer les fonctions, éxécutez les commandes suivantes :
-```SQL
-CREATE OR REPLACE FUNCTION feeling_by_day(myhashtag TEXT)
-RETURNS TABLE (
-    hashtag TEXT,
-    day DATE,
-    feeling TEXT,
-    nb_tweets BIGINT
-)
-LANGUAGE plpgsql
-AS
-$$
-BEGIN
-RETURN QUERY
-    SELECT hashtag.hashtag, date(tweet.date) as day, feeling.feeling, COUNT(tweet.id_tweet)
-    FROM hashtag, tweet, feeling
-    WHERE tweet.fk_feeling_id = feeling.id_feeling
-    AND tweet.fk_hashtag_id = hashtag.id_hashtag
-    AND hashtag.hashtag = myhashtag
-    GROUP BY hashtag.hashtag, day, feeling.feeling
-    ORDER BY hashtag.hashtag, day, feeling.feeling
-;
-END;
-$$
-```
-
 - Pour charger vos différents produits dans la base de données, éxécutez le fichier main.py autant de fois qu'il y a de produits à tester. La base de données fournie est préchargée avec les produits PS5, XBOXSERIESX, Iphone11 et GalaxyZFold2.
 
 - Pour finir, lancez le fichier app.py pour démarrer le serveur.
