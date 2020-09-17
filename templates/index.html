@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Analysis Sentiments</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="row">
+                <h1 class="jumbotron">Analysis Sentiments With Azure</h1>
+            </div>
+
+            <h1 v-bind:class="forme">Product Hashtag</h1>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button class=" btn btn-secondary" v-for="product in products" v-on:click="analyser(product)">
+                    {{product}} </button>
+
+            </div>
+
+            <h1 class="display-4" v-if="msg.length > 0"> Product Analysis</h1>
+            <p class="jumbotron">
+                {{msg}}
+            <p>
+                <canvas id="myChart"></canvas>
+                <canvas id="myChart2"></canvas>
+
+
+        </div>
+    </div>
+
+    <script>
+
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                user: 'Mohamed',
+                products: ["ps5", "xboxseries", "galaxyzfold2", "iphone11"],
+                msg: [],
+                commandes: [],
+                forme: "display-4"
+            },
+            methods: {
+
+                analyser(product) {
+
+                    console.log(product)
+                    const path = 'http://localhost:8080/analysisfeeling/' + product;
+                    axios.get(path, {
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            crossdomain: true
+                        }
+                    })
+                        .then((res) => {
+                            this.msg = res.data;
+                            console.log(this.msg)
+                        })
+                        .catch((error) => {
+                            // eslint-disable-next-line
+                            console.error(error);
+                        });
+
+                    let obj = JSON.parse(this.msg);
+
+
+                    //
+                    Chart.defaults.global.title.display = true;
+                    Chart.defaults.global.title.fontSize = 35
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var chart = new Chart(ctx, {
+                        // The type of chart we want to create
+                        type: 'doughnut',
+
+                        // The data for our dataset
+                        data: {
+                            labels: ['Positive', 'Negative', 'Neutral', 'Mixed'],
+                            datasets: [{
+                                data: [obj.Positive, obj.Negative, obj.Neutral, obj.Mixed],
+                                backgroundColor: ["#2ECC40", "#FF4136", "#C0C0C0", "#000000"]
+                            }]
+                        },
+
+                        // Configuration options go here
+                        options: {
+                            title: {
+                                text: obj.Hashtag
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                                        var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                            return previousValue + currentValue;
+                                        });
+                                        var currentValue = dataset.data[tooltipItem.index];
+                                        var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                                        return percentage + "%";
+                                    }
+                                }
+                            }
+
+                        }
+                    });
+                    var ctx = document.getElementById('myChart2').getContext('2d');
+                    var chart = new Chart(ctx, {
+                        // The type of chart we want to create
+                        type: 'bar',
+
+                        // The data for our dataset
+                        data: {
+                            labels: ['Positive', 'Negative', 'Neutral', 'Mixed'],
+                            datasets: [{
+                                data: [obj.Positive, obj.Negative, obj.Neutral, obj.Mixed],
+                                backgroundColor: ["#2ECC40", "#FF4136", "#C0C0C0", "#000000"]
+                            }]
+                        },
+
+                        // Configuration options go here
+                        options: {
+                            title: {
+                                text: obj.Hashtag
+                            }
+
+                        }
+                    });
+                },
+
+                analyser_day() {
+                    const path = 'http://localhost:8080/analysisfeelingday/' + this.products[0];
+                    axios.get(path, {
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            crossdomain: true
+                        }
+                    })
+                        .then((res) => {
+                            this.msg = res.data;
+                            console.log(res)
+                        })
+                        .catch((error) => {
+                            // eslint-disable-next-line
+                            console.error(error);
+                        });
+                },
+
+            },
+            created() {
+                this.analyser();
+            },
+        })
+    </script>
+</body>
+
+</html>
