@@ -8,26 +8,29 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
 </head>
 
 <body>
+    
     <div id="app">
         <div class="container">
             <div class="row">
-                <h1 class="jumbotron">Analysis Sentiments With Azure</h1>
+                <!-- <h1 class="jumbotron">Analysis Sentiments With Azure </h1> -->
+                <P><img src="../static/twitter1.jpg" alt="alo"></P>  
             </div>
 
-            <h1 v-bind:class="forme">Product Hashtag</h1>
+            <!-- <h1 v-bind:class="forme">Product Hashtag</h1> -->
             <div class="btn-group" role="group" aria-label="Basic example">
                 <button class=" btn btn-secondary" v-for="product in products" v-on:click="analyser(product)">
                     {{product}} </button>
 
             </div>
 
-            <h1 class="display-4" v-if="msg.length > 0"> Product Analysis</h1>
-            <p class="jumbotron">
+            <!-- <h1 class="display-4" v-if="msg.length > 0"> Product Analysis</h1> -->
+            <!-- <p class="jumbotron">
                 {{msg}}
-            <p>
+            <p> -->
                 <canvas id="myChart"></canvas>
                 <canvas id="myChart2"></canvas>
 
